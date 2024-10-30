@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Browser Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            flex-direction: column;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        input,
+        button,
+        select {
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1em;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Auto Browser Search</h1>
+        <p>Enter the number of searches:</p>
+        <input type="number" id="searchCount" placeholder="Enter number of searches" min="1">
+        <p>Select search engine:</p>
+        <select id="searchEngine">
+            <option value="bing">Bing</option>
+            <!-- <option value="google">Google</option> -->
+        </select>
+        <button onclick="startSearch()">Submit</button>
+    </div>
+
+    <script>
+        const wordsArray = [
+            "Artificial Intelligence and its applications",
+            "Top programming languages 2024",
+            "How to improve coding skills",
+            "Introduction to machine learning",
+            "History of the internet",
+            "Best practices in web development",
+            "Data science trends",
+            "How to create a responsive website",
+            "Cloud computing benefits",
+            "Future of quantum computing",
+            "Cybersecurity for beginners",
+            "The impact of blockchain technology",
+            "Popular JavaScript frameworks",
+            "How to start with Python programming",
+            "Importance of UI/UX design",
+            "Basic HTML and CSS tutorials",
+            "What is DevOps?",
+            "Mobile app development tools",
+            "Introduction to databases",
+            "Tips for learning data structures",
+            "How search engines work",
+            "Best project management software",
+            "SEO tips for beginners",
+            "Benefits of version control",
+            "How to deploy web applications",
+            "What is Agile methodology?",
+            "Introduction to REST APIs",
+            "Best code editors for developers",
+            "JavaScript vs. Python",
+            "Introduction to Kubernetes",
+            "What is a neural network?",
+            "Computer vision basics",
+            "Natural language processing applications",
+            "Top Git commands for beginners",
+            "Differences between frontend and backend",
+            "How to build a portfolio website",
+            "Introduction to cloud storage",
+            "Top tech podcasts to follow",
+            "What is Docker and why use it?",
+            "Career paths in software development"
+        ];
+
+        function startSearch() {
+            const searchCount = parseInt(document.getElementById("searchCount").value);
+            const searchEngine = document.getElementById("searchEngine").value;
+
+            if (isNaN(searchCount) || searchCount <= 0 || searchCount > wordsArray.length) {
+                alert(`Please enter a valid number between 1 and ${wordsArray.length}.`);
+                return;
+            }
+
+            let count = 0;
+            const searchTab = window.open("", "_blank");  // Open a new blank tab to reuse for searches
+
+            function searchNextWord() {
+                if (count < searchCount && count < wordsArray.length) {
+                    const word = wordsArray[count];
+                    let searchUrl;
+
+                    // Set the search URL based on the selected search engine
+                    if (searchEngine === "google") {
+                        searchUrl = `https://www.google.com/search?q=${encodeURIComponent(word)}`;
+                    } else if (searchEngine === "bing") {
+                        searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(word)}`;
+                    }
+
+                    searchTab.location.href = searchUrl;  // Update the tab with a new search URL
+                    count++;
+
+                    // Set a delay of 5 seconds before searching the next word
+                    setTimeout(searchNextWord, 8000);
+                } //else {
+                // searchTab.close();  // Close the tab after finishing the searches
+                //}
+            }
+
+            searchNextWord(); // Start the first search
+        }
+    </script>
+
+</body>
+
+</html>
